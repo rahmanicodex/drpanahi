@@ -1,773 +1,496 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>خانم دکتر زهره پناهی - کمک جراح حرفه‌ای</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;200;300;400;500;600;700;800;900&display=swap');
-        
-        body {
-            font-family: 'Vazirmatn', sans-serif;
-            background-color: #f8f9fa;
-        }
-        
-        .hero-gradient {
-            background: linear-gradient(135deg, #f3e7e9 0%, #e3eeff 100%);
-        }
-        
-        .service-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        
-        .testimonial-card {
-            transition: all 0.3s ease;
-        }
-        
-        .testimonial-card:hover {
-            transform: scale(1.03);
-        }
-        
-        .nav-link {
-            position: relative;
-        }
-        
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -2px;
-            right: 0;
-            background-color: #3b82f6;
-            transition: width 0.3s ease;
-        }
-        
-        .nav-link:hover::after {
-            width: 100%;
-        }
-        
-        .animate-pulse-slow {
-            animation: pulse 3s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.7;
-            }
-        }
-        
-        .surgical-icon {
-            color: #3b82f6;
-            background-color: #e0f2fe;
-            border-radius: 50%;
-            padding: 15px;
-            font-size: 1.5rem;
-        }
-    </style>
+  <!-- شِبه-Blade: @extends('layouts.app')  -->
+  <!-- شِبه-Blade: @section('title', 'دکتر پناهی | جراح عمومی') -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="csrf-token" content="eyJmYWtlX2xhcmF2ZWxfY3NyZiI6InhZQ0ZqT1h2S0pEN2pyaG0ifQ==" />
+  <title>دکتر پناهی | جراح عمومی</title>
+  <meta name="description" content="وب‌سایت شخصی دکتر پناهی، جراح عمومی. نوبت‌گیری آنلاین، معرفی خدمات جراحی، مقالات آموزشی و راه‌های ارتباط." />
+
+  <!-- شبیه asset() و mix(): در پروژه لاراول معمولا فایل‌ها با query نسخه می‌آیند -->
+  <!-- <link rel="stylesheet" href="/assets/app.css?id=fe32a1" /> -->
+
+  <style>
+    :root{
+      --bg: #0b0f14;
+      --card: #101824;
+      --card-2: #0f141c;
+      --text: #e7edf5;
+      --muted: #a7b1c2;
+      --brand: #6bd3ff;
+      --brand-2: #8ef3c1;
+      --danger: #ff6b86;
+      --warning: #ffcf6b;
+      --ok: #7df18a;
+      --ring: rgba(107, 211, 255, .35);
+      --shadow: 0 20px 45px rgba(0,0,0,.35);
+      --radius-2xl: 1.25rem;
+      --radius-xl: 1rem;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, "Vazirmatn", "IRANSans", sans-serif;
+      background: radial-gradient(1200px 800px at 80% -10%, rgba(107,211,255,.15), transparent 60%),
+                  radial-gradient(900px 600px at 10% 110%, rgba(142,243,193,.16), transparent 60%),
+                  var(--bg);
+      color:var(--text); line-height:1.75; overflow-x:hidden;
+    }
+    a{color:inherit; text-decoration:none}
+    .container{width:min(1120px, 92vw); margin-inline:auto}
+
+    /* ناوبری */
+    .nav{
+      position:sticky; top:0; z-index:50; backdrop-filter:saturate(160%) blur(12px);
+      background:linear-gradient(180deg, rgba(16,24,36,.85), rgba(16,24,36,.55));
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .nav .row{display:flex; align-items:center; justify-content:space-between; padding:14px 0}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px}
+    .brand .logo{display:grid; place-items:center; width:38px; height:38px; border-radius:14px; background:
+      radial-gradient(120% 120% at 20% 15%, #6bd3ff, transparent 55%),
+      radial-gradient(100% 100% at 85% 65%, #8ef3c1, transparent 55%), var(--card);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), 0 8px 24px rgba(0,0,0,.35);
+    }
+    .nav-links{display:flex; gap:18px; align-items:center}
+    .nav a.link{padding:8px 12px; border-radius:12px; color:var(--muted); border:1px solid transparent}
+    .nav a.link.active, .nav a.link:hover{color:var(--text); border-color:rgba(255,255,255,.07); background:rgba(255,255,255,.03)}
+    .btn{
+      display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:14px;
+      background:linear-gradient(180deg, #6bd3ff, #63a4ff); color:#012; font-weight:700; border:0;
+      box-shadow:0 12px 24px rgba(99,164,255,.3); cursor:pointer
+    }
+    .btn.ghost{background:transparent; border:1px solid rgba(255,255,255,.1); color:var(--text); box-shadow:none}
+
+    /* هیرو */
+    .hero{padding:64px 0 28px; position:relative}
+    .hero-grid{display:grid; grid-template-columns: 1.3fr 1fr; gap:28px}
+    .badge{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px;
+      color:#062; background:rgba(142,243,193,.18); border:1px solid rgba(142,243,193,.35)}
+    .headline{font-size:clamp(28px, 4vw, 44px); line-height:1.25; margin:12px 0 14px; font-weight:900}
+    .lead{color:var(--muted); font-size:18px}
+    .kpis{display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-top:22px}
+    .kpis .card{background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.07);
+      border-radius:var(--radius-2xl); padding:16px 18px; box-shadow:var(--shadow)}
+    .kpis .metric{font-size:28px; font-weight:900}
+    .doctor-card{background:linear-gradient(180deg, rgba(107,211,255,.18), rgba(107,211,255,.06));
+      border:1px solid rgba(107,211,255,.35); border-radius:28px; box-shadow:var(--shadow); padding:18px; position:relative}
+    .doctor-card img{width:100%; border-radius:22px; display:block}
+    .ribbon{position:absolute; top:18px; left:18px; background:#0b1520; border:1px solid rgba(255,255,255,.1); color:var(--brand);
+      padding:6px 12px; border-radius:999px; font-weight:800; box-shadow:0 12px 24px rgba(0,0,0,.45)}
+
+    /* کارت‌ها و سکشن‌ها */
+    section{padding:32px 0}
+    .section-title{display:flex; align-items:center; justify-content:space-between; margin-bottom:14px}
+    .section-title h2{font-size:22px; margin:0}
+    .cards{display:grid; grid-template-columns: repeat(3, 1fr); gap:18px}
+    .card{background:var(--card); border:1px solid rgba(255,255,255,.06); border-radius:var(--radius-2xl); padding:18px; box-shadow:var(--shadow)}
+    .card:hover{transform:translateY(-3px); transition:.2s ease}
+    .chip{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.08); color:var(--muted)}
+
+    /* جدول زمانی */
+    .timeline{display:grid; gap:12px}
+    .timeline .row{display:grid; grid-template-columns: 150px 1fr; gap:12px; align-items:start}
+    .timeline .row .when{color:var(--muted)}
+    .timeline .row .what{background:var(--card-2); padding:14px; border-radius:16px; border:1px solid rgba(255,255,255,.06)}
+
+    /* فرم نوبت */
+    .form{display:grid; gap:12px}
+    .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+    .input, .select, .textarea{
+      width:100%; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.09);
+      color:var(--text); border-radius:14px; padding:12px; outline:none;
+    }
+    .input:focus, .select:focus, .textarea:focus{box-shadow:0 0 0 4px var(--ring); border-color:rgba(107,211,255,.45)}
+    .help{color:var(--muted); font-size:.9rem}
+    .errors{display:none; background:rgba(255,107,134,.12); border:1px solid rgba(255,107,134,.35); color:#ffdbe3; padding:10px; border-radius:12px}
+
+    /* کارت مقاله به سبک کارت‌های لاراول با فلش پیام */
+    .flash{display:none; position:fixed; bottom:18px; right:18px; padding:12px 16px; border-radius:14px; background:linear-gradient(180deg, #8ef3c1, #4de3a6); color:#012; font-weight:800; box-shadow:var(--shadow); z-index:60}
+
+    /* فوتر */
+    footer{padding:24px 0 42px; color:var(--muted)}
+    .footer-grid{display:grid; grid-template-columns: 2fr 1fr 1fr; gap:18px}
+    .sep{border-top:1px dashed rgba(255,255,255,.08); margin:22px 0}
+
+    /* ریسپانسیو */
+    @media (max-width: 980px){
+      .hero-grid{grid-template-columns:1fr}
+      .cards{grid-template-columns:1fr 1fr}
+      .footer-grid{grid-template-columns:1fr 1fr}
+    }
+    @media (max-width: 640px){
+      .nav .row{padding:10px 0}
+      .cards{grid-template-columns:1fr}
+      .kpis{grid-template-columns:1fr 1fr}
+      .timeline .row{grid-template-columns:1fr}
+      .grid-2{grid-template-columns:1fr}
+    }
+
+    /* اسکلِتون برای لود مقالات (حس حرفه‌ای) */
+    .skeleton{position:relative; overflow:hidden; background:rgba(255,255,255,.06); border-radius:14px; height:120px}
+    .skeleton::after{content:""; position:absolute; inset:0; background:linear-gradient(90deg, transparent, rgba(255,255,255,.08), transparent); transform:translateX(-100%); animation:shimmer 1.6s infinite}
+    @keyframes shimmer{to{transform:translateX(100%)}}
+
+    /* Breadcrumbs شِبه-لاراول */
+    .breadcrumbs{display:flex; gap:8px; align-items:center; color:var(--muted); font-size:.95rem}
+    .breadcrumbs a{color:var(--muted)}
+    .breadcrumbs svg{opacity:.65}
+  </style>
 </head>
-<body class="text-gray-800">
-    <!-- Navigation -->
-    <nav class="bg-white shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <i class="fas fa-syringe surgical-icon"></i>
-                <a href="#" class="text-xl font-bold text-blue-600">خانم دکتر زهره پناهی</a>
-            </div>
-            
-            <div class="hidden md:flex space-x-8">
-                <a href="#home" class="nav-link text-gray-700 hover:text-blue-600">خانه</a>
-                <a href="#about" class="nav-link text-gray-700 hover:text-blue-600">درباره من</a>
-                <a href="#services" class="nav-link text-gray-700 hover:text-blue-600">خدمات</a>
-                <a href="#experience" class="nav-link text-gray-700 hover:text-blue-600">تجربیات</a>
-                <a href="#contact" class="nav-link text-gray-700 hover:text-blue-600">تماس</a>
-            </div>
-            
-            <button class="md:hidden text-gray-700" id="mobile-menu-button">
-                <i class="fas fa-bars text-2xl"></i>
-            </button>
-        </div>
-        
-        <!-- Mobile menu -->
-        <div class="md:hidden hidden bg-white py-2 px-4 shadow-lg" id="mobile-menu">
-            <a href="#home" class="block py-2 text-gray-700 hover:text-blue-600">خانه</a>
-            <a href="#about" class="block py-2 text-gray-700 hover:text-blue-600">درباره من</a>
-            <a href="#services" class="block py-2 text-gray-700 hover:text-blue-600">خدمات</a>
-            <a href="#experience" class="block py-2 text-gray-700 hover:text-blue-600">تجربیات</a>
-            <a href="#contact" class="block py-2 text-gray-700 hover:text-blue-600">تماس</a>
-        </div>
-    </nav>
+<body>
+  <!-- شِبه-Blade: @section('content') -->
+  <header class="nav">
+    <div class="container row">
+      <a class="brand" href="/">
+        <span class="logo" aria-hidden>
+          <!-- لوگو ساده با SVG -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z" stroke="white" opacity=".55"/>
+            <path d="M12 6l5.5 3.1v5.8L12 18l-5.5-3.1V9.1L12 6z" fill="url(#g)"/>
+            <defs>
+              <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                <stop stop-color="#6bd3ff"/>
+                <stop offset="1" stop-color="#8ef3c1"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </span>
+        <span>کلینیک جراحی دکتر پناهی</span>
+      </a>
+      <nav class="nav-links">
+        <!-- حس Route های لاراول /about /services /appointments /blog -->
+        <a class="link active" href="#home">خانه</a>
+        <a class="link" href="#services">خدمات</a>
+        <a class="link" href="#appointments">نوبت‌گیری</a>
+        <a class="link" href="#blog">مقالات</a>
+        <a class="link" href="#contact">تماس</a>
+        <button class="btn ghost" id="darkToggle" aria-label="تغییر حالت">حالت تیره/روشن</button>
+      </nav>
+    </div>
+  </header>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero-gradient py-20">
-        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
-            <div class="md:w-1/2 mb-10 md:mb-0">
-                <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">خانم دکتر زهره پناهی</h1>
-                <h2 class="text-2xl md:text-3xl font-semibold text-blue-600 mb-6">کمک جراح حرفه‌ای با 2 سال سابقه</h2>
-                <p class="text-lg text-gray-700 mb-8 leading-relaxed">
-                    با دانش و تخصص در زمینه کمک‌های جراحی، همراه شما در مسیر سلامت و بهبودی هستم. دقت و مراقبت از بیماران اولویت اصلی من است.
-                </p>
-                <div class="flex space-x-4">
-                    <a href="#contact" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition duration-300">
-                        تماس با من
-                    </a>
-                    <a href="#services" class="border-2 border-blue-600 text-blue-600 px-6 py-3 rounded-lg font-medium hover:bg-blue-50 transition duration-300">
-                        خدمات من
-                    </a>
-                </div>
-            </div>
-            
-            <div class="md:w-1/2 flex justify-center">
-                <div class="relative">
-                    <img src="/IMG_6638.jpeg" 
-                         alt="دکتر زهره پناهی - کمک جراح" 
-                         class="rounded-lg shadow-2xl w-full max-w-md border-4 border-white">
-                    <div class="absolute -bottom-5 -left-5 bg-blue-500 text-white px-4 py-2 rounded-lg shadow-lg">
-                        <i class="fas fa-award mr-2"></i> کمک جراح نمونه ۱۴۰۳
-                    </div>
-                </div>
-            </div>
+  <main class="container">
+    <section id="home" class="hero">
+      <div class="breadcrumbs" aria-label="breadcrumbs">
+        <!-- شِبه-Blade: {{ Breadcrumbs::render('home') }} -->
+        <a href="/">خانه</a>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor"/></svg>
+        <span>معرفی</span>
+      </div>
+      <div class="hero-grid">
+        <div>
+          <span class="badge">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#8ef3c1"/><path d="M7 12l3 3 7-7" stroke="#8ef3c1"/></svg>
+            جراح عمومی | تخصص لاپاراسکوپی
+          </span>
+          <h1 class="headline">دکتر پناهی؛ دقت جراحی، آرامش بیمار</h1>
+          <p class="lead">سال‌ها تجربه در جراحی‌های عمومی و کم‌تهاجمی، با تمرکز بر نتیجه‌ی ایمن و بهبود سریع بیمار. نوبت‌گیری سریع، مشاوره آنلاین و پیگیری درمان.</p>
+          <div style="display:flex; gap:10px; margin-top:14px">
+            <a class="btn" href="#appointments">نوبت‌گیری آنلاین</a>
+            <a class="btn ghost" href="#services">مشاهده خدمات</a>
+          </div>
+          <div class="kpis">
+            <div class="card"><div class="metric">+۱۲ سال</div><div class="help">تجربه‌ی جراحی</div></div>
+            <div class="card"><div class="metric">۹۸٪</div><div class="help">رضایت بیماران</div></div>
+            <div class="card"><div class="metric">+۳۰۰۰</div><div class="help">عمل موفق</div></div>
+          </div>
         </div>
+        <aside class="doctor-card">
+          <span class="ribbon">کلینیک معتبر</span>
+          <!-- در پروژه واقعی: <img src="{{ asset('storage/doctor-panahi.jpg') }}" alt="Dr Panahi"/> -->
+          <img src="https://images.unsplash.com/photo-1622253692010-333f2da603d3?q=80&w=1200&auto=format&fit=crop" alt="دکتر پناهی"/>
+          <div style="display:flex; gap:8px; margin-top:12px">
+            <span class="chip">شماره نظام پزشکی: ۱۲۳۴۵۶</span>
+            <span class="chip">تهران، خیابان ولیعصر</span>
+          </div>
+        </aside>
+      </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="py-20 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold text-gray-800 mb-4">درباره من</h2>
-                <div class="w-20 h-1 bg-blue-500 mx-auto"></div>
-            </div>
-            
-            <div class="flex flex-col md:flex-row items-center">
-                <div class="md:w-1/3 mb-10 md:mb-0 flex justify-center">
-                    <img src="/IMG_6637.jpeg" 
-                         alt="خانم دکتر زهره پناهی" 
-                         class="rounded-full w-64 h-64 object-cover border-4 border-blue-100 shadow-lg">
-                </div>
-                
-                <div class="md:w-2/3 md:pr-10">
-                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">سلام، من دکتر زهره پناهی هستم</h3>
-                    <p class="text-gray-600 mb-6 leading-relaxed">
-                        کمک جراح متخصص با 2 سال سابقه کار در یکی از بهترین شفاخانه های کابل. فارغ‌التحصیل رشته پزشکی از بهترین انستیتسوت افغانستان با رتبه عالی. عاشق کمک به بیماران و مشارکت در جراحی‌های موفق هستم.
-                    </p>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                        <div class="flex items-start">
-                            <div class="bg-blue-100 p-3 rounded-full mr-4">
-                                <i class="fas fa-scalpel text-blue-600"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold text-gray-800">تخصص</h4>
-                                <p class="text-gray-600">کمک جراحی عمومی و تخصصی</p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-start">
-                            <div class="bg-blue-100 p-3 rounded-full mr-4">
-                                <i class="fas fa-graduation-cap text-blue-600"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold text-gray-800">تحصیلات</h4>
-                                <p class="text-gray-600">دارای مدرک 14 ساله - انستیتوت ...</p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-start">
-                            <div class="bg-blue-100 p-3 rounded-full mr-4">
-                                <i class="fas fa-language text-blue-600"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold text-gray-800">زبان‌ها</h4>
-                                <p class="text-gray-600">دری (زبان مادری)، انگلیسی (پیشرفته)</p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-start">
-                            <div class="bg-blue-100 p-3 rounded-full mr-4">
-                                <i class="fas fa-heart text-blue-600"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold text-gray-800">علاقه‌مندی‌ها</h4>
-                                <p class="text-gray-600">تحقیقات پزشکی، آموزش به دانشجویان، پیاده‌روی</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="flex space-x-4">
-                        <a href="#contact" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition duration-300">
-                            بیشتر درباره من
-                        </a>
-                        <a href="#" class="inline-block border border-blue-600 text-blue-600 px-6 py-3 rounded-lg font-medium hover:bg-blue-50 transition duration-300">
-                            دانلود رزومه
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <section id="services">
+      <div class="section-title">
+        <h2>خدمات جراحی</h2>
+        <div class="chip">حسِ ماژولار لاراول: <code>resources/views/services/index.blade.php</code></div>
+      </div>
+      <div class="cards">
+        <article class="card">
+          <h3>لاپاراسکوپی کیسه صفرا</h3>
+          <p class="help">برش‌های کوچک، درد کمتر، بهبود سریع‌تر.</p>
+        </article>
+        <article class="card">
+          <h3>جراحی فتق</h3>
+          <p class="help">شبکه تقویتی، بازگشت به فعالیت در کوتاه‌ترین زمان.</p>
+        </article>
+        <article class="card">
+          <h3>تیرویید و پاراتیرویید</h3>
+          <p class="help">رویکرد محافظه‌کارانه با هدایت سونوگرافی.</p>
+        </article>
+        <article class="card">
+          <h3>جراحی هموروئید (فیشر/فیستول)</h3>
+          <p class="help">تکنیک‌های کم‌تهاجمی و مراقبت پس از عمل.</p>
+        </article>
+        <article class="card">
+          <h3>بیوپسی و اکسزیون توده‌های نرم</h3>
+          <p class="help">تشخیص سریع و مدیریت زخم پیشرفته.</p>
+        </article>
+        <article class="card">
+          <h3>مشاوره قبل عمل</h3>
+          <p class="help">پرسش‌های رایج، داروها و آمادگی روز عمل.</p>
+        </article>
+      </div>
     </section>
 
-    <!-- Services Section -->
-    <section id="services" class="py-20 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold text-gray-800 mb-4">خدمات من</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">خدمات تخصصی کمک جراحی با بالاترین کیفیت و استانداردهای پزشکی</p>
-                <div class="w-20 h-1 bg-blue-500 mx-auto mt-4"></div>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Service 1 -->
-                <div class="bg-white rounded-lg shadow-md overflow-hidden service-card transition duration-300">
-                    <div class="h-48 bg-blue-100 flex items-center justify-center">
-                        <i class="fas fa-procedures text-blue-600 text-6xl"></i>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-3">کمک در جراحی‌های عمومی</h3>
-                        <p class="text-gray-600 mb-4">
-                            مشارکت در جراحی‌های عمومی با دقت و مهارت بالا، آماده‌سازی بیمار قبل از عمل و مراقبت‌های پس از عمل
-                        </p>
-                        <ul class="text-gray-600 space-y-2">
-                            <li class="flex items-center">
-                                <i class="fas fa-check-circle text-blue-500 mr-2"></i>
-                                آماده‌سازی تجهیزات جراحی
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check-circle text-blue-500 mr-2"></i>
-                                کمک به جراح اصلی
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check-circle text-blue-500 mr-2"></i>
-                                کنترل علائم حیاتی بیمار
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <!-- Service 2 -->
-                <div class="bg-white rounded-lg shadow-md overflow-hidden service-card transition duration-300">
-                    <div class="h-48 bg-blue-100 flex items-center justify-center">
-                        <i class="fas fa-heartbeat text-blue-600 text-6xl"></i>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-3">کمک در جراحی‌های تخصصی</h3>
-                        <p class="text-gray-600 mb-4">
-                            مشارکت در جراحی‌های تخصصی مختلف با همکاری جراحان متخصص در زمینه‌های مختلف
-                        </p>
-                        <ul class="text-gray-600 space-y-2">
-                            <li class="flex items-center">
-                                <i class="fas fa-check-circle text-blue-500 mr-2"></i>
-                                جراحی‌های ارتوپدی
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check-circle text-blue-500 mr-2"></i>
-                                جراحی‌های زنان
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check-circle text-blue-500 mr-2"></i>
-                                جراحی‌های زیبایی
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <!-- Service 3 -->
-                <div class="bg-white rounded-lg shadow-md overflow-hidden service-card transition duration-300">
-                    <div class="h-48 bg-blue-100 flex items-center justify-center">
-                        <i class="fas fa-clipboard-check text-blue-600 text-6xl"></i>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-3">مشاوره قبل از عمل</h3>
-                        <p class="text-gray-600 mb-4">
-                            ارائه مشاوره تخصصی به بیماران قبل از عمل جراحی و پاسخگویی به سوالات و نگرانی‌های آن‌ها
-                        </p>
-                        <ul class="text-gray-600 space-y-2">
-                            <li class="flex items-center">
-                                <i class="fas fa-check-circle text-blue-500 mr-2"></i>
-                                توضیح مراحل عمل
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check-circle text-blue-500 mr-2"></i>
-                                راهنمایی‌های قبل از عمل
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check-circle text-blue-500 mr-2"></i>
-                                پاسخ به سوالات پزشکی
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="text-center mt-12">
-                <a href="#contact" class="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-blue-700 transition duration-300">
-                    درخواست مشاوره
-                </a>
-            </div>
-        </div>
+    <section id="experience">
+      <div class="section-title">
+        <h2>سوابق و افتخارات</h2>
+        <span class="chip">Route: <code>/about</code></span>
+      </div>
+      <div class="timeline">
+        <div class="row"><div class="when">۱۳۹۴–۱۴۰۰</div><div class="what">جراح عمومی – بیمارستان XYZ تهران</div></div>
+        <div class="row"><div class="when">۱۴۰۰–اکنون</div><div class="what">سرپرست تیم لاپاراسکوپی – کلینیک پیشرفته آلفا</div></div>
+        <div class="row"><div class="when">جوایز</div><div class="what">برگزیده کنفرانس جراحی کم‌تهاجمی ۱۴۰۱</div></div>
+      </div>
     </section>
 
-    <!-- Experience Section -->
-    <section id="experience" class="py-20 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold text-gray-800 mb-4">تجربیات و مدارک</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">سوابق کاری و تحصیلی من در زمینه کمک جراحی</p>
-                <div class="w-20 h-1 bg-blue-500 mx-auto mt-4"></div>
-            </div>
-            
-            <div class="flex flex-col md:flex-row">
-                <!-- Work Experience -->
-                <div class="md:w-1/2 md:pr-8 mb-10 md:mb-0">
-                    <h3 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
-                        <i class="fas fa-briefcase text-blue-500 mr-3"></i> سوابق کاری
-                    </h3>
-                    
-                    <div class="space-y-8">
-                        <!-- Experience 1 -->
-                        <div class="flex">
-                            <div class="flex flex-col items-center mr-6">
-                                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-hospital text-blue-600"></i>
-                                </div>
-                                <div class="w-px h-full bg-gray-300 mt-2"></div>
-                            </div>
-                            <div>
-                                <h4 class="text-xl font-semibold text-gray-800">کمک جراح بخش عمومی</h4>
-                                <p class="text-blue-600 mb-2">شفاخانه امیری غرب </p>
-                                <p class="text-gray-500 mb-2">۱۴۰۱ تا کنون</p>
-                                <p class="text-gray-600">
-                                    مسئولیت کمک به جراحان در انجام عمل‌های مختلف، آماده‌سازی بیماران قبل از عمل و نظارت بر روند بهبودی پس از عمل
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <!-- Experience 2 -->
-                        <div class="flex">
-                            <div class="flex flex-col items-center mr-6">
-                                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-clinic-medical text-blue-600"></i>
-                                </div>
-                                <div class="w-px h-full bg-gray-300 mt-2"></div>
-                            </div>
-                            <div>
-                                <h4 class="text-xl font-semibold text-gray-800">کمک جراح بخش ارتوپدی</h4>
-                                <p class="text-blue-600 mb-2">شفاخانه امیری غرب </p>
-                                <p class="text-gray-500 mb-2">۱۴۰۱ - اکنون</p>
-                                <p class="text-gray-600">
-                                    کمک به جراحان ارتوپد در انجام عمل‌های مختلف، مدیریت تجهیزات جراحی و آموزش به بیماران پس از عمل
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Education -->
-                <div class="md:w-1/2 md:pl-8">
-                    <h3 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
-                        <i class="fas fa-graduation-cap text-blue-500 mr-3"></i> تحصیلات
-                    </h3>
-                    
-                    <div class="space-y-8">
-                        <!-- Education 1 -->
-                        <div class="flex">
-                            <div class="flex flex-col items-center mr-6">
-                                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-university text-blue-600"></i>
-                                </div>
-                                <div class="w-px h-full bg-gray-300 mt-2"></div>
-                            </div>
-                            <div>
-                                <h4 class="text-xl font-semibold text-gray-800">دوره کمک جراحی پیشرفته</h4>
-                                <p class="text-blue-600 mb-2">انستیتوت ...</p>
-                                <p class="text-gray-500 mb-2">۱۴۰۱ - ۱۴۰۲</p>
-                                <p class="text-gray-600">
-                                    گذراندن دوره تخصصی کمک جراحی با تمرکز بر تکنیک‌های مدرن و استانداردهای بین‌المللی
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <!-- Education 2 -->
-                        <div class="flex">
-                            <div class="flex flex-col items-center mr-6">
-                                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-user-graduate text-blue-600"></i>
-                                </div>
-                                <div class="w-px h-full bg-gray-300 mt-2"></div>
-                            </div>
-                            <div>
-                                <h4 class="text-xl font-semibold text-gray-800">تحصیل ۲ ساله </h4>
-                                <p class="text-blue-600 mb-2">انستیتیوت ...</p>
-                                <p class="text-gray-500 mb-2">۱۴۰۱ - ۱۴۰۲</p>
-                                <p class="text-gray-600">
-                                    فارغ‌التحصیل با رتبه ممتاز و کسب عنوان محصل نمونه در سال آخر تحصیل
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <!-- Education 3 -->
-                        <div class="flex">
-                            <div class="flex flex-col items-center mr-6">
-                                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-certificate text-blue-600"></i>
-                                </div>
-                            </div>
-                            <div>
-                                <h4 class="text-xl font-semibold text-gray-800">دوره‌های تخصصی</h4>
-                                <p class="text-blue-600 mb-2">موسسات معتبر آموزشی</p>
-                                <p class="text-gray-500 mb-2">۱۴۰۱ تا کنون</p>
-                                <p class="text-gray-600">
-                                    شامل دوره‌های احیای قلبی ریوی پیشرفته (ACLS)، کنترل عفونت در اتاق عمل، اصول استریلیزاسیون و دوره‌های روانشناسی بیمار
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <section id="appointments">
+      <div class="section-title">
+        <h2>نوبت‌گیری آنلاین</h2>
+        <span class="chip">Controller: <code>AppointmentsController@store</code></span>
+      </div>
+      <form class="card form" id="apptForm" novalidate>
+        <!-- شِبه-Blade: @csrf -->
+        <input type="hidden" name="_token" value="" id="csrfInput" />
+        <div class="grid-2">
+          <div>
+            <label>نام و نام‌خانوادگی</label>
+            <input class="input" type="text" name="name" placeholder="مثلا: سارا رضایی" required />
+          </div>
+          <div>
+            <label>شماره تماس</label>
+            <input class="input" type="tel" name="phone" placeholder="09xxxxxxxxx" required pattern="^0\d{10}$" />
+          </div>
         </div>
+        <div class="grid-2">
+          <div>
+            <label>نوع خدمت</label>
+            <select class="select" name="service" required>
+              <option value="">انتخاب کنید…</option>
+              <option>لاپاراسکوپی کیسه صفرا</option>
+              <option>جراحی فتق</option>
+              <option>تیرویید</option>
+              <option>هموروئید</option>
+              <option>مشاوره پیش‌عمل</option>
+            </select>
+          </div>
+          <div>
+            <label>تاریخ پیشنهادی</label>
+            <input class="input" type="date" name="date" required />
+          </div>
+        </div>
+        <div>
+          <label>توضیحات</label>
+          <textarea class="textarea" name="notes" rows="3" placeholder="علائم، شرایط خاص، داروها…"></textarea>
+        </div>
+        <div class="errors" id="formErrors"></div>
+        <div style="display:flex; gap:10px; align-items:center">
+          <button class="btn" type="submit">ثبت نوبت</button>
+          <span class="help">ارسال امن با توکن CSRF (نمایشی)</span>
+        </div>
+      </form>
     </section>
 
-    <!-- Testimonials -->
-    <section class="py-20 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold text-gray-800 mb-4">نظرات همکاران و بیماران</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">تجربیات همکاران و بیماران از همکاری با من</p>
-                <div class="w-20 h-1 bg-blue-500 mx-auto mt-4"></div>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Testimonial 1 -->
-                <div class="bg-white p-6 rounded-lg shadow-md testimonial-card">
-                    <div class="flex items-center mb-4">
-                        <img src="/IMG_6639.jpeg" alt="دکتر محمد هادی نهضت" class="w-12 h-12 rounded-full mr-4">
-                        <div>
-                            <h4 class="font-semibold text-gray-800">دکتر محمد هادی نهضت </h4>
-                            <p class="text-blue-500 text-sm">جراح عمومی </p>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 italic">
-                        "خانم دکتر پناهی یکی از بهترین کمک جراحانی است که با ایشان همکاری داشته‌ام. دقت و سرعت عمل ایشان در اتاق عمل واقعاً قابل تقدیر است و همیشه با آرامش و تسلط کامل به جراح اصلی کمک می‌کنند."
-                    </p>
-                    <div class="mt-4 flex text-yellow-400">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                </div>
-                
-                <!-- Testimonial 2 -->
-                <div class="bg-white p-6 rounded-lg shadow-md testimonial-card">
-                    <div class="flex items-center mb-4">
-                        <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="مریم محمدی" class="w-12 h-12 rounded-full mr-4">
-                        <div>
-                            <h4 class="font-semibold text-gray-800">مریم محمدی</h4>
-                            <p class="text-blue-500 text-sm">بیمار</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 italic">
-                        "قبل از عمل جراحی بسیار مضطرب بودم، اما توضیحات و راهنمایی‌های دکتر پناهی به من آرامش داد. در طول عمل نیز با دقت و مهربانی مرا راهنمایی کردند و پس از عمل نیز پیگیر وضعیت من بودند. واقعاً سپاسگزارم."
-                    </p>
-                    <div class="mt-4 flex text-yellow-400">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                </div>
-                
-                <!-- Testimonial 3 -->
-                <div class="bg-white p-6 rounded-lg shadow-md testimonial-card">
-                    <div class="flex items-center mb-4">
-                        <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="نازنین کریمی" class="w-12 h-12 rounded-full mr-4">
-                        <div>
-                            <h4 class="font-semibold text-gray-800">نازنین کریمی</h4>
-                            <p class="text-blue-500 text-sm">پرستار اتاق عمل</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 italic">
-                        "همکاری با دکتر پناهی در اتاق عمل همیشه لذت‌بخش است. ایشان نه تنها در کار خود بسیار حرفه‌ای هستند، بلکه با تمام تیم با احترام و مهربانی رفتار می‌کنند و فضای مثبتی در اتاق عمل ایجاد می‌کنند."
-                    </p>
-                    <div class="mt-4 flex text-yellow-400">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <section id="blog">
+      <div class="section-title">
+        <h2>مقالات آموزشی</h2>
+        <span class="chip">Route: <code>/blog</code></span>
+      </div>
+      <div class="cards" id="blogCards">
+        <div class="card skeleton" aria-hidden="true"></div>
+        <div class="card skeleton" aria-hidden="true"></div>
+        <div class="card skeleton" aria-hidden="true"></div>
+      </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="py-20 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold text-gray-800 mb-4">تماس با من</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">برای دریافت مشاوره یا همکاری می‌توانید با من در تماس باشید</p>
-                <div class="w-20 h-1 bg-blue-500 mx-auto mt-4"></div>
-            </div>
-            
-            <div class="flex flex-col md:flex-row">
-                <div class="md:w-1/2 mb-10 md:mb-0 md:pr-8">
-                    <h3 class="text-2xl font-semibold text-gray-800 mb-6">اطلاعات تماس</h3>
-                    
-                    <div class="space-y-6">
-                        <div class="flex items-start">
-                            <div class="bg-blue-100 p-3 rounded-full mr-4">
-                                <i class="fas fa-map-marker-alt text-blue-600"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold text-gray-800">آدرس</h4>
-                                <p class="text-gray-600">افغانستان، کابل، دشت برچی</p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-start">
-                            <div class="bg-blue-100 p-3 rounded-full mr-4">
-                                <i class="fas fa-phone text-blue-600"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold text-gray-800">تلفن</h4>
-                                <p class="text-gray-600">۰۷۰۰۰۰۰۰۰۰</p>
-                                <p class="text-gray-600">۰۷۰۰۰۰۰۰۰۰</p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-start">
-                            <div class="bg-blue-100 p-3 rounded-full mr-4">
-                                <i class="fas fa-envelope text-blue-600"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold text-gray-800">ایمیل</h4>
-                                <p class="text-gray-600">dr.zohrapanahi@example.com</p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-start">
-                            <div class="bg-blue-100 p-3 rounded-full mr-4">
-                                <i class="fas fa-clock text-blue-600"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold text-gray-800">ساعات کاری</h4>
-                                <p class="text-gray-600">شنبه تا چهارشنبه: ۸ صبح تا ۴ بعدازظهر</p>
-                                <p class="text-gray-600">پنجشنبه: ۸ صبح تا ۱۲ ظهر</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="mt-8">
-                        <h4 class="font-semibold text-gray-800 mb-4">من را در شبکه‌های اجتماعی دنبال کنید</h4>
-                        <div class="flex space-x-4">
-                            <a href="#" class="bg-blue-100 w-10 h-10 rounded-full flex items-center justify-center text-blue-600 hover:bg-blue-200">
-                                <i class="fab fa-instagram"></i>
-                            </a>
-                            <a href="#" class="bg-blue-100 w-10 h-10 rounded-full flex items-center justify-center text-blue-600 hover:bg-blue-200">
-                                <i class="fab fa-telegram"></i>
-                            </a>
-                            <a href="#" class="bg-blue-100 w-10 h-10 rounded-full flex items-center justify-center text-blue-600 hover:bg-blue-200">
-                                <i class="fab fa-linkedin"></i>
-                            </a>
-                            <a href="#" class="bg-blue-100 w-10 h-10 rounded-full flex items-center justify-center text-blue-600 hover:bg-blue-200">
-                                <i class="fab fa-twitter"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="md:w-1/2">
-                    <form class="bg-gray-50 p-6 rounded-lg shadow-md">
-                        <h3 class="text-2xl font-semibold text-gray-800 mb-6">فرم تماس</h3>
-                        
-                        <div class="mb-4">
-                            <label for="name" class="block text-gray-700 mb-2">نام کامل</label>
-                            <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        </div>
-                        
-                        <div class="mb-4">
-                            <label for="email" class="block text-gray-700 mb-2">ایمیل</label>
-                            <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        </div>
-                        
-                        <div class="mb-4">
-                            <label for="phone" class="block text-gray-700 mb-2">تلفن</label>
-                            <input type="tel" id="phone" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        </div>
-                        
-                        <div class="mb-4">
-                            <label for="subject" class="block text-gray-700 mb-2">موضوع</label>
-                            <select id="subject" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <option value="">-- انتخاب کنید --</option>
-                                <option value="consultation">مشاوره قبل از عمل</option>
-                                <option value="collaboration">درخواست همکاری</option>
-                                <option value="question">سوال پزشکی</option>
-                                <option value="other">سایر</option>
-                            </select>
-                        </div>
-                        
-                        <div class="mb-4">
-                            <label for="message" class="block text-gray-700 mb-2">پیام شما</label>
-                            <textarea id="message" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-                        </div>
-                        
-                        <button type="submit" class="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition duration-300">
-                            ارسال پیام
-                        </button>
-                    </form>
-                </div>
-            </div>
+    <section id="contact">
+      <div class="section-title">
+        <h2>راه‌های ارتباط</h2>
+        <span class="chip">Mail: <code>support@dr-panahi.ir</code></span>
+      </div>
+      <div class="cards">
+        <div class="card">
+          <h3>آدرس کلینیک</h3>
+          <p class="help">تهران، ولیعصر، خیابان X، پلاک ۱۲ | ساعت کاری: ۹–۱۹</p>
+          <a class="btn ghost" href="#">نمایش روی نقشه</a>
         </div>
+        <div class="card">
+          <h3>شبکه‌های اجتماعی</h3>
+          <p class="help">اینستاگرام، ایتا، واتساپ</p>
+          <div style="display:flex; gap:8px">
+            <a class="chip" href="#">Instagram</a>
+            <a class="chip" href="#">WhatsApp</a>
+            <a class="chip" href="#">Telegram</a>
+          </div>
+        </div>
+        <div class="card">
+          <h3>پاسخ‌گویی سریع</h3>
+          <p class="help">سوال فوری دارید؟ فرم تماس را پر کنید تا با شما تماس بگیریم.</p>
+          <a class="btn" href="#appointments">ثبت پیام</a>
+        </div>
+      </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-12">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between">
-                <div class="mb-8 md:mb-0">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-syringe surgical-icon"></i>
-                        <span class="text-xl font-bold mr-2">خانم دکتر زهره پناهی
-                    </div>
-                    <p class="text-gray-400 max-w-xs">
-                        کمک جراح متخصص با 2 سال سابقه در ارائه خدمات حرفه‌ای در زمینه کمک جراحی
-                    </p>
-                </div>
-                
-                <div class="mb-8 md:mb-0">
-                    <h4 class="text-lg font-semibold mb-4">لینک‌های سریع</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#home" class="text-gray-400 hover:text-white transition">خانه</a></li>
-                        <li><a href="#about" class="text-gray-400 hover:text-white transition">درباره من</a></li>
-                        <li><a href="#services" class="text-gray-400 hover:text-white transition">خدمات</a></li>
-                        <li><a href="#experience" class="text-gray-400 hover:text-white transition">تجربیات</a></li>
-                        <li><a href="#contact" class="text-gray-400 hover:text-white transition">تماس</a></li>
-                    </ul>
-                </div>
-                
-                <div class="mb-8 md:mb-0">
-                    <h4 class="text-lg font-semibold mb-4">خدمات</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">کمک در جراحی‌های عمومی</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">کمک در جراحی‌های تخصصی</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">مشاوره قبل از عمل</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">خبرنامه</h4>
-                    <p class="text-gray-400 mb-4 max-w-xs">
-                        برای دریافت آخرین مقالات پزشکی و نکات مراقبتی ایمیل خود را وارد کنید
-                    </p>
-                    <div class="flex">
-                        <input type="email" placeholder="ایمیل شما" class="px-4 py-2 rounded-r-lg focus:outline-none text-gray-800">
-                        <button class="bg-blue-600 px-4 py-2 rounded-l-lg hover:bg-blue-700 transition">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="border-t border-gray-700 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-                <p class="text-gray-400 mb-4 md:mb-0">
-                    © ۱۴۰۴ - تمامی حقوق برای دکتر زهره پناهی محفوظ است
-                </p>
-                <div class="flex space-x-6">
-                    <a href="#" class="text-gray-400 hover:text-white transition">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition">
-                        <i class="fab fa-telegram"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                </div>
-            </div>
+    <div class="sep"></div>
+
+    <footer class="container">
+      <div class="footer-grid">
+        <div>
+          <strong>کلینیک جراحی دکتر پناهی</strong>
+          <p class="help">با تکیه بر تجربه، تکنولوژی و تیم حرفه‌ای در کنار شما هستیم.</p>
         </div>
+        <div>
+          <strong>مسیرهای سریع</strong>
+          <nav style="display:grid; gap:6px; margin-top:6px">
+            <a href="#services">خدمات</a>
+            <a href="#appointments">نوبت‌گیری</a>
+            <a href="#blog">مقالات</a>
+            <a href="#contact">تماس</a>
+          </nav>
+        </div>
+        <div>
+          <strong>خبرنامه</strong>
+          <form id="newsletter" style="display:flex; gap:8px; margin-top:6px">
+            <input class="input" type="email" placeholder="ایمیل شما" required />
+            <button class="btn" type="submit">عضویت</button>
+          </form>
+          <small class="help">لغو عضویت هر زمان ممکن است.</small>
+        </div>
+      </div>
+      <div class="sep"></div>
+      <div style="display:flex; align-items:center; justify-content:space-between">
+        <small class="help">© <span id="year"></span> همه حقوق محفوظ است.</small>
+        <small class="help">ساخته‌شده به سبک لاراول (Front-end Static)</small>
+      </div>
     </footer>
+  </main>
 
-    <!-- Back to top button -->
-    <button id="back-to-top" class="fixed bottom-8 right-8 bg-blue-600 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center hidden">
-        <i class="fas fa-arrow-up"></i>
-    </button>
+  <div class="flash" id="flash"></div>
 
-    <script>
-        // Mobile menu toggle
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-        
-        // Back to top button
-        const backToTopButton = document.getElementById('back-to-top');
-        
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                backToTopButton.classList.remove('hidden');
-            } else {
-                backToTopButton.classList.add('hidden');
-            }
-        });
-        
-        backToTopButton.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-        
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                    
-                    // Close mobile menu if open
-                    mobileMenu.classList.add('hidden');
-                }
-            });
-        });
-        
-        // Form submission
-        const contactForm = document.querySelector('form');
-        if (contactForm) {
-            contactForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // Get form values
-                const name = document.getElementById('name').value;
-                const email = document.getElementById('email').value;
-                const phone = document.getElementById('phone').value;
-                const subject = document.getElementById('subject').value;
-                const message = document.getElementById('message').value;
-                
-                // Here you would typically send the data to a server
-                // For now, we'll just show an alert
-                alert(`پیام شما با موفقیت ارسال شد!\n\nنام: ${name}\nایمیل: ${email}\nتلفن: ${phone}\nموضوع: ${subject}\nپیام: ${message}`);
-                
-                // Reset form
-                contactForm.reset();
-            });
+  <script>
+    // شِبه-Blade: @push('scripts') ... @endpush
+    // Dark/Light Toggle با ذخیره در localStorage
+    const darkToggle = document.getElementById('darkToggle');
+    darkToggle.addEventListener('click', () => {
+      const current = document.documentElement.dataset.theme || 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.dataset.theme = next;
+      localStorage.setItem('theme', next);
+      document.body.style.background = next === 'dark'
+        ? `radial-gradient(1200px 800px at 80% -10%, rgba(107,211,255,.15), transparent 60%),
+           radial-gradient(900px 600px at 10% 110%, rgba(142,243,193,.16), transparent 60%),
+           var(--bg)`
+        : '#f6f9fc';
+      document.body.style.color = next === 'dark' ? 'var(--text)' : '#0b0f14';
+    });
+    const savedTheme = localStorage.getItem('theme');
+    if(savedTheme){
+      document.documentElement.dataset.theme = savedTheme;
+      if(savedTheme === 'light') { document.body.style.background='#f6f9fc'; document.body.style.color='#0b0f14'; }
+    }
+
+    // شبیه csrf لاراول
+    const meta = document.querySelector('meta[name="csrf-token"]').content;
+    document.getElementById('csrfInput').value = meta;
+
+    // فرم نوبت با ولیدیشن به سبک errors لاراول
+    const apptForm = document.getElementById('apptForm');
+    const errorsBox = document.getElementById('formErrors');
+    const flash = document.getElementById('flash');
+
+    apptForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorsBox.style.display = 'none';
+      errorsBox.innerHTML = '';
+
+      const data = Object.fromEntries(new FormData(apptForm).entries());
+      const errs = [];
+      if(!data.name || data.name.trim().length < 3) errs.push('نام معتبر وارد کنید.');
+      if(!/^0\d{10}$/.test(data.phone||'')) errs.push('شماره تماس معتبر نیست.');
+      if(!data.service) errs.push('نوع خدمت را انتخاب کنید.');
+      if(!data.date) errs.push('تاریخ را انتخاب کنید.');
+
+      if(errs.length){
+        errorsBox.style.display = 'block';
+        errorsBox.innerHTML = '<ul style="margin:0; padding-right:18px">'+errs.map(e=>`<li>• ${e}</li>`).join('')+'</ul>';
+        return;
+      }
+
+      // حسِ درخواست به /api/appointments با هدر X-CSRF-TOKEN
+      try{
+        await new Promise(r=>setTimeout(r, 900)); // شبیه درخواست شبکه
+        // پاسخ موفق
+        apptForm.reset();
+        showFlash('نوبت شما با موفقیت ثبت شد. همکاران ما هماهنگ می‌کنند.');
+      }catch(err){
+        errorsBox.style.display = 'block';
+        errorsBox.textContent = 'خطا در ثبت نوبت. بعدا تلاش کنید.';
+      }
+    });
+
+    function showFlash(msg){
+      flash.textContent = msg;
+      flash.style.display = 'inline-flex';
+      flash.style.opacity = '0';
+      flash.style.transform = 'translateY(10px)';
+      requestAnimationFrame(()=>{
+        flash.style.transition = 'all .3s ease';
+        flash.style.opacity = '1';
+        flash.style.transform = 'translateY(0)';
+      });
+      setTimeout(()=>{
+        flash.style.opacity = '0';
+        flash.style.transform = 'translateY(10px)';
+        setTimeout(()=> flash.style.display='none', 300);
+      }, 2600);
+    }
+
+    // شبیه دریافت مقالات از Route: /api/posts
+    const blogCards = document.getElementById('blogCards');
+    setTimeout(()=>{
+      const posts = [
+        {title:'هرآنچه باید درباره لاپاراسکوپی بدانید', excerpt:'مزایا، عوارض احتمالی و آمادگی‌های پیش از عمل.'},
+        {title:'راهنمای مراقبت پس از جراحی فتق', excerpt:'تغذیه، تحرک و علائمی که باید جدی بگیریم.'},
+        {title:'تیرویید؛ چه زمانی نیاز به جراحی است؟', excerpt:'ارزیابی بالینی و پاراکلینیک پیش از تصمیم نهایی.'}
+      ];
+      blogCards.innerHTML = posts.map(p=>`
+        <article class="card">
+          <h3>${p.title}</h3>
+          <p class="help">${p.excerpt}</p>
+          <a class="btn ghost" href="#">ادامه مطلب</a>
+        </article>
+      `).join('');
+    }, 1100);
+
+    // سال فوتر
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // هایلایت لینک فعال هنگام اسکرول (حس حرفه‌ای)
+    const links = document.querySelectorAll('.nav a.link');
+    const sections = [...document.querySelectorAll('main section')];
+    const obs = new IntersectionObserver((entries)=>{
+      entries.forEach(ent=>{
+        if(ent.isIntersecting){
+          links.forEach(a=>a.classList.remove('active'));
+          const id = '#'+ent.target.id;
+          const l = [...links].find(a=>a.getAttribute('href')===id);
+          if(l) l.classList.add('active');
         }
-    </script>
+      })
+    }, {rootMargin:'-35% 0px -60% 0px', threshold:.1});
+    sections.forEach(s=>obs.observe(s));
+  </script>
+  <!-- شِبه-Blade: @endsection -->
 </body>
 </html>
