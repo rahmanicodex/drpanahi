@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>سیستم حسابداری حواله</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+body {font-family: 'Vazirmatn', sans-serif; background: #f0f4f8; margin:0; padding:0; color:#333;}
+header {background: linear-gradient(90deg,#6a11cb,#2575fc); color:#fff; padding:1rem; text-align:center; font-size:1.6rem; border-radius:0 0 25px 25px; position:relative; box-shadow:0 4px 15px rgba(0,0,0,0.2);}
+.logoutBtn {position:absolute; left:1rem; top:1rem; background:#ff4757; padding:0.3rem 0.8rem; border-radius:12px; font-size:0.9rem; cursor:pointer; border:none; transition:0.3s;}
+.logoutBtn:hover {background:#ff6b81;}
+nav {display:flex; justify-content:center; flex-wrap:wrap; gap:10px; margin:1rem 0;}
+main#mainSystem {display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; padding: 1rem;}
+.card {background:#fff; padding:1.5rem; border-radius:20px; box-shadow:0 6px 20px rgba(0,0,0,0.12); transition:0.3s;}
+.card:hover {box-shadow:0 10px 30px rgba(0,0,0,0.18);}
+input, select, textarea {width:100%; padding:0.7rem; margin:0.3rem 0 0.8rem; border:1px solid #ccc; border-radius:12px; font-size:0.95rem; box-sizing:border-box;}
+textarea {resize:none;}
+button {padding:0.6rem 1rem; border:none; border-radius:12px; background:linear-gradient(90deg,#6a11cb,#2575fc); color:#fff; font-weight:bold; cursor:pointer; transition:0.3s; font-size:0.95rem;}
+button:hover {background:linear-gradient(90deg,#2575fc,#6a11cb);}
+button.action {width:auto; margin-top:0.3rem;}
+table {width:100%; border-collapse:collapse; margin-top:0.8rem; font-size:0.9rem;}
+th, td {border:1px solid #ddd; padding:0.5rem; text-align:center;}
+th {background:#f7f9fc; font-weight:600;}
+#loginSection {display:flex; justify-content:center; align-items:center; height:100vh;}
+#loginSection .card {max-width:400px; text-align:center;}
+.summary {margin:0.5rem 0; font-weight:bold; color:#2575fc; font-size:1rem;}
+a {color:#2575fc; cursor:pointer; text-decoration:none;}
+a:hover {text-decoration:underline;}
+</style>
+</head>
+<body>
+
+<!-- صفحه ورود -->
+<section id="loginSection" class="card">
+<h2>ورود به سیستم</h2>
+<input type="text" id="username" placeholder="نام کاربری">
+<input type="password" id="password" placeholder="رمز عبور">
+<button onclick="login()">ورود</button>
+<p id="loginError" style="color:red"></p>
+</section>
+
+<!-- سیستم اصلی -->
+<section id="systemSection" style="display:none;">
+<header>
+سیستم حسابداری حواله
+<button class="logoutBtn" onclick="logout()">خروج</button>
+</header>
+
+<nav>
+<button onclick="showSection('customers')">مشتریان</button>
+<button onclick="showSection('sarrafs')">صرافان</button>
+<button onclick="showSection('transactions')">تراکنش‌ها</button>
+<button onclick="showSection('reports')">گزارش‌ها</button>
+</nav>
+
+<main id="mainSystem">
+<!-- مشتریان -->
+<section id="customers" class="card">
+<h2>مشتریان</h2>
+<input type="text" id="customerName" placeholder="نام مشتری را وارد کنید">
+<input type="text" id="customerPhone" placeholder="شماره تلفن را وارد کنید">
+<input type="text" id="customerAddress" placeholder="آدرس را وارد کنید">
+<button class="action" onclick="addCustomer()">افزودن مشتری</button>
+<table id="customerTable"><thead><tr><th>نام</th><th>تلفن</th><th>آدرس</th><th>حذف</th></tr></thead><tbody></tbody></table>
+<div id="customerTransactions"></div>
+</section>
+
+<!-- صرافان -->
+<section id="sarrafs" class="card hidden">
+<h2>صرافان</h2>
+<input type="text" id="sarrafName" placeholder="نام صراف را وارد کنید">
+<input type="text" id="sarrafPhone" placeholder="شماره تلفن را وارد کنید">
+<input type="text" id="sarrafAddress" placeholder="آدرس را وارد کنید">
+<button class="action" onclick="addSarraf()">افزودن صراف</button>
+<table id="sarrafTable"><thead><tr><th>نام</th><th>تلفن</th><th>آدرس</th><th>حذف</th></tr></thead><tbody></tbody></table>
+</section>
+
+<!-- تراکنش ها -->
+<section id="transactions" class="card hidden">
+<h2>تراکنش‌ها</h2>
+<input type="text" id="transPerson" placeholder="نام شخص را وارد کنید">
+<input type="date" id="transDate">
+<input type="number" id="transAmount" placeholder="مبلغ را وارد کنید">
+<select id="transCurrency"><option value="AFN">افغانی</option><option value="USD">دالر</option><option value="EUR">یورو</option></select>
+<select id="transType"><option value="deposit">جمع به حساب</option><option value="withdraw">برداشت</option></select>
+<textarea id="transNote" placeholder="توضیحات را وارد کنید"></textarea>
+<button class="action" onclick="addTransaction()">ثبت تراکنش</button>
+<table id="transTable"><thead><tr><th>شخص</th><th>تاریخ</th><th>مبلغ</th><th>ارز</th><th>نوع</th><th>توضیحات</th></tr></thead><tbody></tbody></table>
+</section>
+
+<!-- گزارش ها -->
+<section id="reports" class="card hidden">
+<h2>گزارش کلی</h2>
+<label>تاریخ شروع:</label><input type="date" id="reportStart">
+<label>تاریخ پایان:</label><input type="date" id="reportEnd">
+<button class="action" onclick="renderReports()">نمایش گزارش</button>
+<div id="reportSummary" class="summary"></div>
+<div id="reportContent"></div>
+</section>
+
+</main>
+</section>
+
+<script>
+const customers=[], sarrafs=[], transactions=[];
+
+// ورود و خروج
+function login(){
+  const user=document.getElementById('username').value;
+  const pass=document.getElementById('password').value;
+  if(user==='admin' && pass==='123'){
+    document.getElementById('loginSection').style.display = 'none';
+    document.getElementById('systemSection').style.display = 'block';
+  } else {
+    document.getElementById('loginError').innerText='نام کاربری یا رمز عبور اشتباه است';
+  }
+}
+function logout(){
+  document.getElementById('loginSection').style.display = 'flex';
+  document.getElementById('systemSection').style.display = 'none';
+}
+
+// نمایش بخش‌ها
+function showSection(id){
+  document.querySelectorAll('#mainSystem section').forEach(s=>s.classList.add('hidden')); 
+  document.getElementById(id).classList.remove('hidden');
+}
+
+// مشتریان
+function addCustomer(){
+  let n=document.getElementById('customerName').value.trim(),
+      p=document.getElementById('customerPhone').value.trim(),
+      a=document.getElementById('customerAddress').value.trim();
+  if(!n||!p||!a){alert('پر کردن همه فیلدها الزامی است'); return;}
+  customers.push({name:n, phone:p, address:a});
+  let row=document.createElement('tr');
+  row.innerHTML=`<td><a href='#' onclick="showCustomerTransactions('${n}')">${n}</a></td><td>${p}</td><td>${a}</td><td><button onclick="this.parentElement.parentElement.remove()">❌</button></td>`;
+  document.querySelector('#customerTable tbody').appendChild(row);
+  document.getElementById('customerName').value='';
+  document.getElementById('customerPhone').value='';
+  document.getElementById('customerAddress').value='';
+}
+
+// صرافان
+function addSarraf(){
+  let n=document.getElementById('sarrafName').value.trim(),
+      p=document.getElementById('sarrafPhone').value.trim(),
+      a=document.getElementById('sarrafAddress').value.trim();
+  if(!n||!p||!a){alert('پر کردن همه فیلدها الزامی است'); return;}
+  sarrafs.push({name:n, phone:p, address:a});
+  let row=document.createElement('tr');
+  row.innerHTML=`<td>${n}</td><td>${p}</td><td>${a}</td><td><button onclick="this.parentElement.parentElement.remove()">❌</button></td>`;
+  document.querySelector('#sarrafTable tbody').appendChild(row);
+  document.getElementById('sarrafName').value='';
+  document.getElementById('sarrafPhone').value='';
+  document.getElementById('sarrafAddress').value='';
+}
+
+// تراکنش‌ها
+function addTransaction(){
+  let p=document.getElementById('transPerson').value.trim(),
+      d=document.getElementById('transDate').value,
+      a=parseFloat(document.getElementById('transAmount').value),
+      c=document.getElementById('transCurrency').value,
+      t=document.getElementById('transType').value,
+      note=document.getElementById('transNote').value;
+  if(!p||!d||!a){alert('نام، تاریخ و مبلغ الزامی است'); return;}
+  transactions.push({person:p,date:d,amount:a,currency:c,type:t,note});
+  let row=document.createElement('tr');
+  row.innerHTML=`<td>${p}</td><td>${d}</td><td>${a}</td><td>${c}</td><td>${t=='deposit'?'جمع به حساب':'برداشت'}</td><td>${note}</td>`;
+  document.querySelector('#transTable tbody').appendChild(row);
+  document.getElementById('transPerson').value='';
+  document.getElementById('transDate').value='';
+  document.getElementById('transAmount').value='';
+  document.getElementById('transNote').value='';
+}
+
+// نمایش تراکنش‌های مشتری
+function showCustomerTransactions(name){
+  let custTx=transactions.filter(t=>t.person===name); 
+  let div=document.getElementById('customerTransactions'); 
+  if(custTx.length===0){div.innerHTML=`<p>هیچ تراکنشی برای ${name} وجود ندارد.</p>`; return;}
+  let totalDeposit=0,totalWithdraw=0; 
+  let html=`<h3>تراکنش‌های ${name}</h3><table><tr><th>تاریخ</th><th>مبلغ</th><th>ارز</th><th>نوع</th><th>توضیحات</th></tr>`;
+  custTx.forEach(t=>{
+    html+=`<tr><td>${t.date}</td><td>${t.amount}</td><td>${t.currency}</td><td>${t.type=='deposit'?'جمع به حساب':'برداشت'}</td><td>${t.note}</td></tr>`;
+    t.type=='deposit'?totalDeposit+=t.amount:totalWithdraw+=t.amount;
+  });
+  html+='</table>'; 
+  let balance=totalDeposit-totalWithdraw; 
+  let status=balance>0?'طلبکار':balance<0?'بدهکار':'تسویه'; 
+  html+=`<p>جمع واریز: ${totalDeposit} | جمع برداشت: ${totalWithdraw} | مانده: ${balance} (${status})</p>`; 
+  div.innerHTML=html;
+}
+
+// گزارش‌ها
+function renderReports(){
+  let start=document.getElementById('reportStart').value,
+      end=document.getElementById('reportEnd').value;
+  let filtered=transactions.filter(t=>(!start||t.date>=start)&&(!end||t.date<=end));
+  let summary=''; 
+  let content='<table><tr><th>شخص</th><th>تاریخ</th><th>مبلغ</th><th>ارز</th><th>نوع</th><th>توضیحات</th></tr>'; 
+  filtered.forEach(t=>{content+=`<tr><td>${t.person}</td><td>${t.date}</td><td>${t.amount}</td><td>${t.currency}</td><td>${t.type=='deposit'?'جمع به حساب':'برداشت'}</td><td>${t.note}</td></tr>`;}); 
+  content+='</table>'; 
+  let currencies={}; 
+  filtered.forEach(t=>{
+    if(!currencies[t.currency])currencies[t.currency]={deposit:0,withdraw:0}; 
+    t.type=='deposit'?currencies[t.currency].deposit+=t.amount:currencies[t.currency].withdraw+=t.amount;
+  }); 
+  for(let cur in currencies){
+    let dep=currencies[cur].deposit,wit=currencies[cur].withdraw,bal=dep-wit,status=bal>0?'طلبکار':bal<0?'بدهکار':'تسویه';
+    summary+=`${cur}: جمع واریز ${dep} | جمع برداشت ${wit} | مانده ${bal} (${status})<br>`;
+  } 
+  document.getElementById('reportSummary').innerHTML=summary; 
+  document.getElementById('reportContent').innerHTML=content;
+}
+</script>
+
+</body>
+</html>
