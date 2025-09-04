@@ -1,496 +1,220 @@
-<!DOCTYPE html>
+
 <html lang="fa" dir="rtl">
 <head>
-  <!-- شِبه-Blade: @extends('layouts.app')  -->
-  <!-- شِبه-Blade: @section('title', 'دکتر پناهی | جراح عمومی') -->
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="csrf-token" content="eyJmYWtlX2xhcmF2ZWxfY3NyZiI6InhZQ0ZqT1h2S0pEN2pyaG0ifQ==" />
-  <title>دکتر پناهی | جراح عمومی</title>
-  <meta name="description" content="وب‌سایت شخصی دکتر پناهی، جراح عمومی. نوبت‌گیری آنلاین، معرفی خدمات جراحی، مقالات آموزشی و راه‌های ارتباط." />
-
-  <!-- شبیه asset() و mix(): در پروژه لاراول معمولا فایل‌ها با query نسخه می‌آیند -->
-  <!-- <link rel="stylesheet" href="/assets/app.css?id=fe32a1" /> -->
-
-  <style>
-    :root{
-      --bg: #0b0f14;
-      --card: #101824;
-      --card-2: #0f141c;
-      --text: #e7edf5;
-      --muted: #a7b1c2;
-      --brand: #6bd3ff;
-      --brand-2: #8ef3c1;
-      --danger: #ff6b86;
-      --warning: #ffcf6b;
-      --ok: #7df18a;
-      --ring: rgba(107, 211, 255, .35);
-      --shadow: 0 20px 45px rgba(0,0,0,.35);
-      --radius-2xl: 1.25rem;
-      --radius-xl: 1rem;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, "Vazirmatn", "IRANSans", sans-serif;
-      background: radial-gradient(1200px 800px at 80% -10%, rgba(107,211,255,.15), transparent 60%),
-                  radial-gradient(900px 600px at 10% 110%, rgba(142,243,193,.16), transparent 60%),
-                  var(--bg);
-      color:var(--text); line-height:1.75; overflow-x:hidden;
-    }
-    a{color:inherit; text-decoration:none}
-    .container{width:min(1120px, 92vw); margin-inline:auto}
-
-    /* ناوبری */
-    .nav{
-      position:sticky; top:0; z-index:50; backdrop-filter:saturate(160%) blur(12px);
-      background:linear-gradient(180deg, rgba(16,24,36,.85), rgba(16,24,36,.55));
-      border-bottom:1px solid rgba(255,255,255,.06);
-    }
-    .nav .row{display:flex; align-items:center; justify-content:space-between; padding:14px 0}
-    .brand{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px}
-    .brand .logo{display:grid; place-items:center; width:38px; height:38px; border-radius:14px; background:
-      radial-gradient(120% 120% at 20% 15%, #6bd3ff, transparent 55%),
-      radial-gradient(100% 100% at 85% 65%, #8ef3c1, transparent 55%), var(--card);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), 0 8px 24px rgba(0,0,0,.35);
-    }
-    .nav-links{display:flex; gap:18px; align-items:center}
-    .nav a.link{padding:8px 12px; border-radius:12px; color:var(--muted); border:1px solid transparent}
-    .nav a.link.active, .nav a.link:hover{color:var(--text); border-color:rgba(255,255,255,.07); background:rgba(255,255,255,.03)}
-    .btn{
-      display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:14px;
-      background:linear-gradient(180deg, #6bd3ff, #63a4ff); color:#012; font-weight:700; border:0;
-      box-shadow:0 12px 24px rgba(99,164,255,.3); cursor:pointer
-    }
-    .btn.ghost{background:transparent; border:1px solid rgba(255,255,255,.1); color:var(--text); box-shadow:none}
-
-    /* هیرو */
-    .hero{padding:64px 0 28px; position:relative}
-    .hero-grid{display:grid; grid-template-columns: 1.3fr 1fr; gap:28px}
-    .badge{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px;
-      color:#062; background:rgba(142,243,193,.18); border:1px solid rgba(142,243,193,.35)}
-    .headline{font-size:clamp(28px, 4vw, 44px); line-height:1.25; margin:12px 0 14px; font-weight:900}
-    .lead{color:var(--muted); font-size:18px}
-    .kpis{display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-top:22px}
-    .kpis .card{background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.07);
-      border-radius:var(--radius-2xl); padding:16px 18px; box-shadow:var(--shadow)}
-    .kpis .metric{font-size:28px; font-weight:900}
-    .doctor-card{background:linear-gradient(180deg, rgba(107,211,255,.18), rgba(107,211,255,.06));
-      border:1px solid rgba(107,211,255,.35); border-radius:28px; box-shadow:var(--shadow); padding:18px; position:relative}
-    .doctor-card img{width:100%; border-radius:22px; display:block}
-    .ribbon{position:absolute; top:18px; left:18px; background:#0b1520; border:1px solid rgba(255,255,255,.1); color:var(--brand);
-      padding:6px 12px; border-radius:999px; font-weight:800; box-shadow:0 12px 24px rgba(0,0,0,.45)}
-
-    /* کارت‌ها و سکشن‌ها */
-    section{padding:32px 0}
-    .section-title{display:flex; align-items:center; justify-content:space-between; margin-bottom:14px}
-    .section-title h2{font-size:22px; margin:0}
-    .cards{display:grid; grid-template-columns: repeat(3, 1fr); gap:18px}
-    .card{background:var(--card); border:1px solid rgba(255,255,255,.06); border-radius:var(--radius-2xl); padding:18px; box-shadow:var(--shadow)}
-    .card:hover{transform:translateY(-3px); transition:.2s ease}
-    .chip{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.08); color:var(--muted)}
-
-    /* جدول زمانی */
-    .timeline{display:grid; gap:12px}
-    .timeline .row{display:grid; grid-template-columns: 150px 1fr; gap:12px; align-items:start}
-    .timeline .row .when{color:var(--muted)}
-    .timeline .row .what{background:var(--card-2); padding:14px; border-radius:16px; border:1px solid rgba(255,255,255,.06)}
-
-    /* فرم نوبت */
-    .form{display:grid; gap:12px}
-    .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:12px}
-    .input, .select, .textarea{
-      width:100%; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.09);
-      color:var(--text); border-radius:14px; padding:12px; outline:none;
-    }
-    .input:focus, .select:focus, .textarea:focus{box-shadow:0 0 0 4px var(--ring); border-color:rgba(107,211,255,.45)}
-    .help{color:var(--muted); font-size:.9rem}
-    .errors{display:none; background:rgba(255,107,134,.12); border:1px solid rgba(255,107,134,.35); color:#ffdbe3; padding:10px; border-radius:12px}
-
-    /* کارت مقاله به سبک کارت‌های لاراول با فلش پیام */
-    .flash{display:none; position:fixed; bottom:18px; right:18px; padding:12px 16px; border-radius:14px; background:linear-gradient(180deg, #8ef3c1, #4de3a6); color:#012; font-weight:800; box-shadow:var(--shadow); z-index:60}
-
-    /* فوتر */
-    footer{padding:24px 0 42px; color:var(--muted)}
-    .footer-grid{display:grid; grid-template-columns: 2fr 1fr 1fr; gap:18px}
-    .sep{border-top:1px dashed rgba(255,255,255,.08); margin:22px 0}
-
-    /* ریسپانسیو */
-    @media (max-width: 980px){
-      .hero-grid{grid-template-columns:1fr}
-      .cards{grid-template-columns:1fr 1fr}
-      .footer-grid{grid-template-columns:1fr 1fr}
-    }
-    @media (max-width: 640px){
-      .nav .row{padding:10px 0}
-      .cards{grid-template-columns:1fr}
-      .kpis{grid-template-columns:1fr 1fr}
-      .timeline .row{grid-template-columns:1fr}
-      .grid-2{grid-template-columns:1fr}
-    }
-
-    /* اسکلِتون برای لود مقالات (حس حرفه‌ای) */
-    .skeleton{position:relative; overflow:hidden; background:rgba(255,255,255,.06); border-radius:14px; height:120px}
-    .skeleton::after{content:""; position:absolute; inset:0; background:linear-gradient(90deg, transparent, rgba(255,255,255,.08), transparent); transform:translateX(-100%); animation:shimmer 1.6s infinite}
-    @keyframes shimmer{to{transform:translateX(100%)}}
-
-    /* Breadcrumbs شِبه-لاراول */
-    .breadcrumbs{display:flex; gap:8px; align-items:center; color:var(--muted); font-size:.95rem}
-    .breadcrumbs a{color:var(--muted)}
-    .breadcrumbs svg{opacity:.65}
-  </style>
+<meta charset="UTF-8">
+<title>سیستم حسابداری حواله</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+body {font-family: 'Vazirmatn', sans-serif; background: #f0f4f8; margin:0; padding:0; color:#333;}
+header {background: linear-gradient(90deg,#6a11cb,#2575fc); color:#fff; padding:1rem; text-align:center; font-size:1.6rem; border-radius:0 0 25px 25px; position:relative; box-shadow:0 4px 15px rgba(0,0,0,0.2);}
+.logoutBtn {position:absolute; left:1rem; top:1rem; background:#ff4757; padding:0.3rem 0.8rem; border-radius:12px; font-size:0.9rem; cursor:pointer; border:none; transition:0.3s;}
+.logoutBtn:hover {background:#ff6b81;}
+nav {display:flex; justify-content:center; flex-wrap:wrap; gap:10px; margin:1rem 0;}
+main#mainSystem {display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; padding: 1rem;}
+.card {background:#fff; padding:1.5rem; border-radius:20px; box-shadow:0 6px 20px rgba(0,0,0,0.12); transition:0.3s;}
+.card:hover {box-shadow:0 10px 30px rgba(0,0,0,0.18);}
+input, select, textarea {width:100%; padding:0.7rem; margin:0.3rem 0 0.8rem; border:1px solid #ccc; border-radius:12px; font-size:0.95rem; box-sizing:border-box;}
+textarea {resize:none;}
+button {padding:0.6rem 1rem; border:none; border-radius:12px; background:linear-gradient(90deg,#6a11cb,#2575fc); color:#fff; font-weight:bold; cursor:pointer; transition:0.3s; font-size:0.95rem;}
+button:hover {background:linear-gradient(90deg,#2575fc,#6a11cb);}
+button.action {width:auto; margin-top:0.3rem;}
+table {width:100%; border-collapse:collapse; margin-top:0.8rem; font-size:0.9rem;}
+th, td {border:1px solid #ddd; padding:0.5rem; text-align:center;}
+th {background:#f7f9fc; font-weight:600;}
+#loginSection {display:flex; justify-content:center; align-items:center; height:100vh;}
+#loginSection .card {max-width:400px; text-align:center;}
+.summary {margin:0.5rem 0; font-weight:bold; color:#2575fc; font-size:1rem;}
+a {color:#2575fc; cursor:pointer; text-decoration:none;}
+a:hover {text-decoration:underline;}
+</style>
 </head>
 <body>
-  <!-- شِبه-Blade: @section('content') -->
-  <header class="nav">
-    <div class="container row">
-      <a class="brand" href="/">
-        <span class="logo" aria-hidden>
-          <!-- لوگو ساده با SVG -->
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z" stroke="white" opacity=".55"/>
-            <path d="M12 6l5.5 3.1v5.8L12 18l-5.5-3.1V9.1L12 6z" fill="url(#g)"/>
-            <defs>
-              <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-                <stop stop-color="#6bd3ff"/>
-                <stop offset="1" stop-color="#8ef3c1"/>
-              </linearGradient>
-            </defs>
-          </svg>
-        </span>
-        <span>کلینیک جراحی دکتر پناهی</span>
-      </a>
-      <nav class="nav-links">
-        <!-- حس Route های لاراول /about /services /appointments /blog -->
-        <a class="link active" href="#home">خانه</a>
-        <a class="link" href="#services">خدمات</a>
-        <a class="link" href="#appointments">نوبت‌گیری</a>
-        <a class="link" href="#blog">مقالات</a>
-        <a class="link" href="#contact">تماس</a>
-        <button class="btn ghost" id="darkToggle" aria-label="تغییر حالت">حالت تیره/روشن</button>
-      </nav>
-    </div>
-  </header>
 
-  <main class="container">
-    <section id="home" class="hero">
-      <div class="breadcrumbs" aria-label="breadcrumbs">
-        <!-- شِبه-Blade: {{ Breadcrumbs::render('home') }} -->
-        <a href="/">خانه</a>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor"/></svg>
-        <span>معرفی</span>
-      </div>
-      <div class="hero-grid">
-        <div>
-          <span class="badge">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#8ef3c1"/><path d="M7 12l3 3 7-7" stroke="#8ef3c1"/></svg>
-            جراح عمومی | تخصص لاپاراسکوپی
-          </span>
-          <h1 class="headline">دکتر پناهی؛ دقت جراحی، آرامش بیمار</h1>
-          <p class="lead">سال‌ها تجربه در جراحی‌های عمومی و کم‌تهاجمی، با تمرکز بر نتیجه‌ی ایمن و بهبود سریع بیمار. نوبت‌گیری سریع، مشاوره آنلاین و پیگیری درمان.</p>
-          <div style="display:flex; gap:10px; margin-top:14px">
-            <a class="btn" href="#appointments">نوبت‌گیری آنلاین</a>
-            <a class="btn ghost" href="#services">مشاهده خدمات</a>
-          </div>
-          <div class="kpis">
-            <div class="card"><div class="metric">+۱۲ سال</div><div class="help">تجربه‌ی جراحی</div></div>
-            <div class="card"><div class="metric">۹۸٪</div><div class="help">رضایت بیماران</div></div>
-            <div class="card"><div class="metric">+۳۰۰۰</div><div class="help">عمل موفق</div></div>
-          </div>
-        </div>
-        <aside class="doctor-card">
-          <span class="ribbon">کلینیک معتبر</span>
-          <!-- در پروژه واقعی: <img src="{{ asset('storage/doctor-panahi.jpg') }}" alt="Dr Panahi"/> -->
-          <img src="https://images.unsplash.com/photo-1622253692010-333f2da603d3?q=80&w=1200&auto=format&fit=crop" alt="دکتر پناهی"/>
-          <div style="display:flex; gap:8px; margin-top:12px">
-            <span class="chip">شماره نظام پزشکی: ۱۲۳۴۵۶</span>
-            <span class="chip">تهران، خیابان ولیعصر</span>
-          </div>
-        </aside>
-      </div>
-    </section>
+<!-- صفحه ورود -->
+<section id="loginSection" class="card">
+<h2>ورود به سیستم</h2>
+<input type="text" id="username" placeholder="نام کاربری">
+<input type="password" id="password" placeholder="رمز عبور">
+<button onclick="login()">ورود</button>
+<p id="loginError" style="color:red"></p>
+</section>
 
-    <section id="services">
-      <div class="section-title">
-        <h2>خدمات جراحی</h2>
-        <div class="chip">حسِ ماژولار لاراول: <code>resources/views/services/index.blade.php</code></div>
-      </div>
-      <div class="cards">
-        <article class="card">
-          <h3>لاپاراسکوپی کیسه صفرا</h3>
-          <p class="help">برش‌های کوچک، درد کمتر، بهبود سریع‌تر.</p>
-        </article>
-        <article class="card">
-          <h3>جراحی فتق</h3>
-          <p class="help">شبکه تقویتی، بازگشت به فعالیت در کوتاه‌ترین زمان.</p>
-        </article>
-        <article class="card">
-          <h3>تیرویید و پاراتیرویید</h3>
-          <p class="help">رویکرد محافظه‌کارانه با هدایت سونوگرافی.</p>
-        </article>
-        <article class="card">
-          <h3>جراحی هموروئید (فیشر/فیستول)</h3>
-          <p class="help">تکنیک‌های کم‌تهاجمی و مراقبت پس از عمل.</p>
-        </article>
-        <article class="card">
-          <h3>بیوپسی و اکسزیون توده‌های نرم</h3>
-          <p class="help">تشخیص سریع و مدیریت زخم پیشرفته.</p>
-        </article>
-        <article class="card">
-          <h3>مشاوره قبل عمل</h3>
-          <p class="help">پرسش‌های رایج، داروها و آمادگی روز عمل.</p>
-        </article>
-      </div>
-    </section>
+<!-- سیستم اصلی -->
+<section id="systemSection" style="display:none;">
+<header>
+سیستم حسابداری حواله
+<button class="logoutBtn" onclick="logout()">خروج</button>
+</header>
 
-    <section id="experience">
-      <div class="section-title">
-        <h2>سوابق و افتخارات</h2>
-        <span class="chip">Route: <code>/about</code></span>
-      </div>
-      <div class="timeline">
-        <div class="row"><div class="when">۱۳۹۴–۱۴۰۰</div><div class="what">جراح عمومی – بیمارستان XYZ تهران</div></div>
-        <div class="row"><div class="when">۱۴۰۰–اکنون</div><div class="what">سرپرست تیم لاپاراسکوپی – کلینیک پیشرفته آلفا</div></div>
-        <div class="row"><div class="when">جوایز</div><div class="what">برگزیده کنفرانس جراحی کم‌تهاجمی ۱۴۰۱</div></div>
-      </div>
-    </section>
+<nav>
+<button onclick="showSection('customers')">مشتریان</button>
+<button onclick="showSection('sarrafs')">صرافان</button>
+<button onclick="showSection('transactions')">تراکنش‌ها</button>
+<button onclick="showSection('reports')">گزارش‌ها</button>
+</nav>
 
-    <section id="appointments">
-      <div class="section-title">
-        <h2>نوبت‌گیری آنلاین</h2>
-        <span class="chip">Controller: <code>AppointmentsController@store</code></span>
-      </div>
-      <form class="card form" id="apptForm" novalidate>
-        <!-- شِبه-Blade: @csrf -->
-        <input type="hidden" name="_token" value="" id="csrfInput" />
-        <div class="grid-2">
-          <div>
-            <label>نام و نام‌خانوادگی</label>
-            <input class="input" type="text" name="name" placeholder="مثلا: سارا رضایی" required />
-          </div>
-          <div>
-            <label>شماره تماس</label>
-            <input class="input" type="tel" name="phone" placeholder="09xxxxxxxxx" required pattern="^0\d{10}$" />
-          </div>
-        </div>
-        <div class="grid-2">
-          <div>
-            <label>نوع خدمت</label>
-            <select class="select" name="service" required>
-              <option value="">انتخاب کنید…</option>
-              <option>لاپاراسکوپی کیسه صفرا</option>
-              <option>جراحی فتق</option>
-              <option>تیرویید</option>
-              <option>هموروئید</option>
-              <option>مشاوره پیش‌عمل</option>
-            </select>
-          </div>
-          <div>
-            <label>تاریخ پیشنهادی</label>
-            <input class="input" type="date" name="date" required />
-          </div>
-        </div>
-        <div>
-          <label>توضیحات</label>
-          <textarea class="textarea" name="notes" rows="3" placeholder="علائم، شرایط خاص، داروها…"></textarea>
-        </div>
-        <div class="errors" id="formErrors"></div>
-        <div style="display:flex; gap:10px; align-items:center">
-          <button class="btn" type="submit">ثبت نوبت</button>
-          <span class="help">ارسال امن با توکن CSRF (نمایشی)</span>
-        </div>
-      </form>
-    </section>
+<main id="mainSystem">
+<!-- مشتریان -->
+<section id="customers" class="card">
+<h2>مشتریان</h2>
+<input type="text" id="customerName" placeholder="نام مشتری را وارد کنید">
+<input type="text" id="customerPhone" placeholder="شماره تلفن را وارد کنید">
+<input type="text" id="customerAddress" placeholder="آدرس را وارد کنید">
+<button class="action" onclick="addCustomer()">افزودن مشتری</button>
+<table id="customerTable"><thead><tr><th>نام</th><th>تلفن</th><th>آدرس</th><th>حذف</th></tr></thead><tbody></tbody></table>
+<div id="customerTransactions"></div>
+</section>
 
-    <section id="blog">
-      <div class="section-title">
-        <h2>مقالات آموزشی</h2>
-        <span class="chip">Route: <code>/blog</code></span>
-      </div>
-      <div class="cards" id="blogCards">
-        <div class="card skeleton" aria-hidden="true"></div>
-        <div class="card skeleton" aria-hidden="true"></div>
-        <div class="card skeleton" aria-hidden="true"></div>
-      </div>
-    </section>
+<!-- صرافان -->
+<section id="sarrafs" class="card hidden">
+<h2>صرافان</h2>
+<input type="text" id="sarrafName" placeholder="نام صراف را وارد کنید">
+<input type="text" id="sarrafPhone" placeholder="شماره تلفن را وارد کنید">
+<input type="text" id="sarrafAddress" placeholder="آدرس را وارد کنید">
+<button class="action" onclick="addSarraf()">افزودن صراف</button>
+<table id="sarrafTable"><thead><tr><th>نام</th><th>تلفن</th><th>آدرس</th><th>حذف</th></tr></thead><tbody></tbody></table>
+</section>
 
-    <section id="contact">
-      <div class="section-title">
-        <h2>راه‌های ارتباط</h2>
-        <span class="chip">Mail: <code>support@dr-panahi.ir</code></span>
-      </div>
-      <div class="cards">
-        <div class="card">
-          <h3>آدرس کلینیک</h3>
-          <p class="help">تهران، ولیعصر، خیابان X، پلاک ۱۲ | ساعت کاری: ۹–۱۹</p>
-          <a class="btn ghost" href="#">نمایش روی نقشه</a>
-        </div>
-        <div class="card">
-          <h3>شبکه‌های اجتماعی</h3>
-          <p class="help">اینستاگرام، ایتا، واتساپ</p>
-          <div style="display:flex; gap:8px">
-            <a class="chip" href="#">Instagram</a>
-            <a class="chip" href="#">WhatsApp</a>
-            <a class="chip" href="#">Telegram</a>
-          </div>
-        </div>
-        <div class="card">
-          <h3>پاسخ‌گویی سریع</h3>
-          <p class="help">سوال فوری دارید؟ فرم تماس را پر کنید تا با شما تماس بگیریم.</p>
-          <a class="btn" href="#appointments">ثبت پیام</a>
-        </div>
-      </div>
-    </section>
+<!-- تراکنش ها -->
+<section id="transactions" class="card hidden">
+<h2>تراکنش‌ها</h2>
+<input type="text" id="transPerson" placeholder="نام شخص را وارد کنید">
+<input type="date" id="transDate">
+<input type="number" id="transAmount" placeholder="مبلغ را وارد کنید">
+<select id="transCurrency"><option value="AFN">افغانی</option><option value="USD">دالر</option><option value="EUR">یورو</option></select>
+<select id="transType"><option value="deposit">جمع به حساب</option><option value="withdraw">برداشت</option></select>
+<textarea id="transNote" placeholder="توضیحات را وارد کنید"></textarea>
+<button class="action" onclick="addTransaction()">ثبت تراکنش</button>
+<table id="transTable"><thead><tr><th>شخص</th><th>تاریخ</th><th>مبلغ</th><th>ارز</th><th>نوع</th><th>توضیحات</th></tr></thead><tbody></tbody></table>
+</section>
 
-    <div class="sep"></div>
+<!-- گزارش ها -->
+<section id="reports" class="card hidden">
+<h2>گزارش کلی</h2>
+<label>تاریخ شروع:</label><input type="date" id="reportStart">
+<label>تاریخ پایان:</label><input type="date" id="reportEnd">
+<button class="action" onclick="renderReports()">نمایش گزارش</button>
+<div id="reportSummary" class="summary"></div>
+<div id="reportContent"></div>
+</section>
 
-    <footer class="container">
-      <div class="footer-grid">
-        <div>
-          <strong>کلینیک جراحی دکتر پناهی</strong>
-          <p class="help">با تکیه بر تجربه، تکنولوژی و تیم حرفه‌ای در کنار شما هستیم.</p>
-        </div>
-        <div>
-          <strong>مسیرهای سریع</strong>
-          <nav style="display:grid; gap:6px; margin-top:6px">
-            <a href="#services">خدمات</a>
-            <a href="#appointments">نوبت‌گیری</a>
-            <a href="#blog">مقالات</a>
-            <a href="#contact">تماس</a>
-          </nav>
-        </div>
-        <div>
-          <strong>خبرنامه</strong>
-          <form id="newsletter" style="display:flex; gap:8px; margin-top:6px">
-            <input class="input" type="email" placeholder="ایمیل شما" required />
-            <button class="btn" type="submit">عضویت</button>
-          </form>
-          <small class="help">لغو عضویت هر زمان ممکن است.</small>
-        </div>
-      </div>
-      <div class="sep"></div>
-      <div style="display:flex; align-items:center; justify-content:space-between">
-        <small class="help">© <span id="year"></span> همه حقوق محفوظ است.</small>
-        <small class="help">ساخته‌شده به سبک لاراول (Front-end Static)</small>
-      </div>
-    </footer>
-  </main>
+</main>
+</section>
 
-  <div class="flash" id="flash"></div>
+<script>
+const customers=[], sarrafs=[], transactions=[];
 
-  <script>
-    // شِبه-Blade: @push('scripts') ... @endpush
-    // Dark/Light Toggle با ذخیره در localStorage
-    const darkToggle = document.getElementById('darkToggle');
-    darkToggle.addEventListener('click', () => {
-      const current = document.documentElement.dataset.theme || 'dark';
-      const next = current === 'dark' ? 'light' : 'dark';
-      document.documentElement.dataset.theme = next;
-      localStorage.setItem('theme', next);
-      document.body.style.background = next === 'dark'
-        ? `radial-gradient(1200px 800px at 80% -10%, rgba(107,211,255,.15), transparent 60%),
-           radial-gradient(900px 600px at 10% 110%, rgba(142,243,193,.16), transparent 60%),
-           var(--bg)`
-        : '#f6f9fc';
-      document.body.style.color = next === 'dark' ? 'var(--text)' : '#0b0f14';
-    });
-    const savedTheme = localStorage.getItem('theme');
-    if(savedTheme){
-      document.documentElement.dataset.theme = savedTheme;
-      if(savedTheme === 'light') { document.body.style.background='#f6f9fc'; document.body.style.color='#0b0f14'; }
-    }
+// ورود و خروج
+function login(){
+  const user=document.getElementById('username').value;
+  const pass=document.getElementById('password').value;
+  if(user==='admin' && pass==='123'){
+    document.getElementById('loginSection').style.display = 'none';
+    document.getElementById('systemSection').style.display = 'block';
+  } else {
+    document.getElementById('loginError').innerText='نام کاربری یا رمز عبور اشتباه است';
+  }
+}
+function logout(){
+  document.getElementById('loginSection').style.display = 'flex';
+  document.getElementById('systemSection').style.display = 'none';
+}
 
-    // شبیه csrf لاراول
-    const meta = document.querySelector('meta[name="csrf-token"]').content;
-    document.getElementById('csrfInput').value = meta;
+// نمایش بخش‌ها
+function showSection(id){
+  document.querySelectorAll('#mainSystem section').forEach(s=>s.classList.add('hidden')); 
+  document.getElementById(id).classList.remove('hidden');
+}
 
-    // فرم نوبت با ولیدیشن به سبک errors لاراول
-    const apptForm = document.getElementById('apptForm');
-    const errorsBox = document.getElementById('formErrors');
-    const flash = document.getElementById('flash');
+// مشتریان
+function addCustomer(){
+  let n=document.getElementById('customerName').value.trim(),
+      p=document.getElementById('customerPhone').value.trim(),
+      a=document.getElementById('customerAddress').value.trim();
+  if(!n||!p||!a){alert('پر کردن همه فیلدها الزامی است'); return;}
+  customers.push({name:n, phone:p, address:a});
+  let row=document.createElement('tr');
+  row.innerHTML=`<td><a href='#' onclick="showCustomerTransactions('${n}')">${n}</a></td><td>${p}</td><td>${a}</td><td><button onclick="this.parentElement.parentElement.remove()">❌</button></td>`;
+  document.querySelector('#customerTable tbody').appendChild(row);
+  document.getElementById('customerName').value='';
+  document.getElementById('customerPhone').value='';
+  document.getElementById('customerAddress').value='';
+}
 
-    apptForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      errorsBox.style.display = 'none';
-      errorsBox.innerHTML = '';
+// صرافان
+function addSarraf(){
+  let n=document.getElementById('sarrafName').value.trim(),
+      p=document.getElementById('sarrafPhone').value.trim(),
+      a=document.getElementById('sarrafAddress').value.trim();
+  if(!n||!p||!a){alert('پر کردن همه فیلدها الزامی است'); return;}
+  sarrafs.push({name:n, phone:p, address:a});
+  let row=document.createElement('tr');
+  row.innerHTML=`<td>${n}</td><td>${p}</td><td>${a}</td><td><button onclick="this.parentElement.parentElement.remove()">❌</button></td>`;
+  document.querySelector('#sarrafTable tbody').appendChild(row);
+  document.getElementById('sarrafName').value='';
+  document.getElementById('sarrafPhone').value='';
+  document.getElementById('sarrafAddress').value='';
+}
 
-      const data = Object.fromEntries(new FormData(apptForm).entries());
-      const errs = [];
-      if(!data.name || data.name.trim().length < 3) errs.push('نام معتبر وارد کنید.');
-      if(!/^0\d{10}$/.test(data.phone||'')) errs.push('شماره تماس معتبر نیست.');
-      if(!data.service) errs.push('نوع خدمت را انتخاب کنید.');
-      if(!data.date) errs.push('تاریخ را انتخاب کنید.');
+// تراکنش‌ها
+function addTransaction(){
+  let p=document.getElementById('transPerson').value.trim(),
+      d=document.getElementById('transDate').value,
+      a=parseFloat(document.getElementById('transAmount').value),
+      c=document.getElementById('transCurrency').value,
+      t=document.getElementById('transType').value,
+      note=document.getElementById('transNote').value;
+  if(!p||!d||!a){alert('نام، تاریخ و مبلغ الزامی است'); return;}
+  transactions.push({person:p,date:d,amount:a,currency:c,type:t,note});
+  let row=document.createElement('tr');
+  row.innerHTML=`<td>${p}</td><td>${d}</td><td>${a}</td><td>${c}</td><td>${t=='deposit'?'جمع به حساب':'برداشت'}</td><td>${note}</td>`;
+  document.querySelector('#transTable tbody').appendChild(row);
+  document.getElementById('transPerson').value='';
+  document.getElementById('transDate').value='';
+  document.getElementById('transAmount').value='';
+  document.getElementById('transNote').value='';
+}
 
-      if(errs.length){
-        errorsBox.style.display = 'block';
-        errorsBox.innerHTML = '<ul style="margin:0; padding-right:18px">'+errs.map(e=>`<li>• ${e}</li>`).join('')+'</ul>';
-        return;
-      }
+// نمایش تراکنش‌های مشتری
+function showCustomerTransactions(name){
+  let custTx=transactions.filter(t=>t.person===name); 
+  let div=document.getElementById('customerTransactions'); 
+  if(custTx.length===0){div.innerHTML=`<p>هیچ تراکنشی برای ${name} وجود ندارد.</p>`; return;}
+  let totalDeposit=0,totalWithdraw=0; 
+  let html=`<h3>تراکنش‌های ${name}</h3><table><tr><th>تاریخ</th><th>مبلغ</th><th>ارز</th><th>نوع</th><th>توضیحات</th></tr>`;
+  custTx.forEach(t=>{
+    html+=`<tr><td>${t.date}</td><td>${t.amount}</td><td>${t.currency}</td><td>${t.type=='deposit'?'جمع به حساب':'برداشت'}</td><td>${t.note}</td></tr>`;
+    t.type=='deposit'?totalDeposit+=t.amount:totalWithdraw+=t.amount;
+  });
+  html+='</table>'; 
+  let balance=totalDeposit-totalWithdraw; 
+  let status=balance>0?'طلبکار':balance<0?'بدهکار':'تسویه'; 
+  html+=`<p>جمع واریز: ${totalDeposit} | جمع برداشت: ${totalWithdraw} | مانده: ${balance} (${status})</p>`; 
+  div.innerHTML=html;
+}
 
-      // حسِ درخواست به /api/appointments با هدر X-CSRF-TOKEN
-      try{
-        await new Promise(r=>setTimeout(r, 900)); // شبیه درخواست شبکه
-        // پاسخ موفق
-        apptForm.reset();
-        showFlash('نوبت شما با موفقیت ثبت شد. همکاران ما هماهنگ می‌کنند.');
-      }catch(err){
-        errorsBox.style.display = 'block';
-        errorsBox.textContent = 'خطا در ثبت نوبت. بعدا تلاش کنید.';
-      }
-    });
+// گزارش‌ها
+function renderReports(){
+  let start=document.getElementById('reportStart').value,
+      end=document.getElementById('reportEnd').value;
+  let filtered=transactions.filter(t=>(!start||t.date>=start)&&(!end||t.date<=end));
+  let summary=''; 
+  let content='<table><tr><th>شخص</th><th>تاریخ</th><th>مبلغ</th><th>ارز</th><th>نوع</th><th>توضیحات</th></tr>'; 
+  filtered.forEach(t=>{content+=`<tr><td>${t.person}</td><td>${t.date}</td><td>${t.amount}</td><td>${t.currency}</td><td>${t.type=='deposit'?'جمع به حساب':'برداشت'}</td><td>${t.note}</td></tr>`;}); 
+  content+='</table>'; 
+  let currencies={}; 
+  filtered.forEach(t=>{
+    if(!currencies[t.currency])currencies[t.currency]={deposit:0,withdraw:0}; 
+    t.type=='deposit'?currencies[t.currency].deposit+=t.amount:currencies[t.currency].withdraw+=t.amount;
+  }); 
+  for(let cur in currencies){
+    let dep=currencies[cur].deposit,wit=currencies[cur].withdraw,bal=dep-wit,status=bal>0?'طلبکار':bal<0?'بدهکار':'تسویه';
+    summary+=`${cur}: جمع واریز ${dep} | جمع برداشت ${wit} | مانده ${bal} (${status})<br>`;
+  } 
+  document.getElementById('reportSummary').innerHTML=summary; 
+  document.getElementById('reportContent').innerHTML=content;
+}
+</script>
 
-    function showFlash(msg){
-      flash.textContent = msg;
-      flash.style.display = 'inline-flex';
-      flash.style.opacity = '0';
-      flash.style.transform = 'translateY(10px)';
-      requestAnimationFrame(()=>{
-        flash.style.transition = 'all .3s ease';
-        flash.style.opacity = '1';
-        flash.style.transform = 'translateY(0)';
-      });
-      setTimeout(()=>{
-        flash.style.opacity = '0';
-        flash.style.transform = 'translateY(10px)';
-        setTimeout(()=> flash.style.display='none', 300);
-      }, 2600);
-    }
-
-    // شبیه دریافت مقالات از Route: /api/posts
-    const blogCards = document.getElementById('blogCards');
-    setTimeout(()=>{
-      const posts = [
-        {title:'هرآنچه باید درباره لاپاراسکوپی بدانید', excerpt:'مزایا، عوارض احتمالی و آمادگی‌های پیش از عمل.'},
-        {title:'راهنمای مراقبت پس از جراحی فتق', excerpt:'تغذیه، تحرک و علائمی که باید جدی بگیریم.'},
-        {title:'تیرویید؛ چه زمانی نیاز به جراحی است؟', excerpt:'ارزیابی بالینی و پاراکلینیک پیش از تصمیم نهایی.'}
-      ];
-      blogCards.innerHTML = posts.map(p=>`
-        <article class="card">
-          <h3>${p.title}</h3>
-          <p class="help">${p.excerpt}</p>
-          <a class="btn ghost" href="#">ادامه مطلب</a>
-        </article>
-      `).join('');
-    }, 1100);
-
-    // سال فوتر
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // هایلایت لینک فعال هنگام اسکرول (حس حرفه‌ای)
-    const links = document.querySelectorAll('.nav a.link');
-    const sections = [...document.querySelectorAll('main section')];
-    const obs = new IntersectionObserver((entries)=>{
-      entries.forEach(ent=>{
-        if(ent.isIntersecting){
-          links.forEach(a=>a.classList.remove('active'));
-          const id = '#'+ent.target.id;
-          const l = [...links].find(a=>a.getAttribute('href')===id);
-          if(l) l.classList.add('active');
-        }
-      })
-    }, {rootMargin:'-35% 0px -60% 0px', threshold:.1});
-    sections.forEach(s=>obs.observe(s));
-  </script>
-  <!-- شِبه-Blade: @endsection -->
 </body>
 </html>
